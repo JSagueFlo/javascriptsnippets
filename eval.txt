@@ -1,0 +1,6 @@
+executa codi javascript en forma de cadena
+
+OJO NO UTILITZAR A LA LLEUGERA (INJECCIO DE CODI)
+
+var x = eval("2 + 2") + "<br">;
+x="4<br>"

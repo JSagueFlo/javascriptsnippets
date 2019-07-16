@@ -1,0 +1,83 @@
+<html>
+<head>
+	<title>Efecte sumatori</title>
+</head>
+<body>
+	<h1>Efecte sumatori amb jQuery</h1>
+	<div id="mydiv">
+		<span class="count">123456789</span>,<span class="count decimal">01112</span>
+	</div>
+
+	<div>
+		<p>BUG: If there is decimal part starting with 0, it will delete that 0 causing an error.<br>
+		Must fix this by parsing the decimal part first.</p>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+	<script type="text/javascript">
+		function addNumberThousands(nStr) {
+			nStr += '';
+			var x = nStr.split('.');
+			var x1 = x[0];
+			var x2 = x.length > 1 ? '.' + x[1] : '';
+			var rgx = /(\d+)(\d{3})/;
+			while (rgx.test(x1)) {
+				x1 = x1.replace(rgx, '$1' + '.' + '$2');
+			}
+			return x1 + x2;
+		}
+		
+		// Trigger on window ready
+		$(window).ready(function() {
+			$('.count').each(function() {
+				$(this).prop('Counter', 0).animate(
+				{
+					Counter: $(this).text()
+				}, 
+				{
+					duration: 2000,
+					easing: 'swing',
+					step: function(now) {
+						if($(this).hasClass('decimal')){
+							$(this).text( Math.ceil(now) );
+						}else{
+							$(this).text( addNumberThousands( Math.ceil(now) ) );
+						}
+					}
+				});
+			}); 
+			{ $('.count').removeClass('count').addClass('counted'); };
+		});
+
+		// Trigger on scroll
+		$(window).scroll(function() {
+			var hT = $('#mydiv').offset().top,
+			hH = $('#mydiv').outerHeight(),
+			wH = $(window).height(),
+			wS = $(this).scrollTop();
+
+			// console.log((hT - wH), wS);
+			if (wS > (hT + hH - wH)) {
+				$('.count').each(function() {
+					$(this).prop('Counter', 0).animate(
+					{
+						Counter: $(this).text()
+					}, 
+					{
+						duration: 2000,
+						easing: 'swing',
+						step: function(now) {
+							if($(this).hasClass('decimal')){
+								$(this).text( Math.ceil(now) );
+							}else{
+								$(this).text( addNumberThousands( Math.ceil(now) ) );
+							}
+						}
+					});
+				}); 
+				{ $('.count').removeClass('count').addClass('counted'); };
+			}
+		});
+	</script>
+</body>
+</html>

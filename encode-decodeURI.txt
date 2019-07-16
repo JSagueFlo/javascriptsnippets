@@ -1,0 +1,14 @@
+encodeURI()
+decodeURI()
+
+serveix per codificar o decodificar strings per passarles per URL
+per exemple, un espai en un string (" "), no es igual que un espai en una URL ( %20 )!!!
+molt útil!
+
+
+encodeURIComponent()
+decodeURIComponent()
+
+fan el mateix però amb més varietat de caràcters (/ ? & # @ ...) 
+és a dir, també codifica els elements utilitzats per la pròpia URL.
+
