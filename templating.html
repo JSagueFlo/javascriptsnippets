@@ -1,0 +1,55 @@
+<html>
+	<head>
+		<title>Templating with JavaScript</title>
+	</head>
+	<body>
+		<h1>Template.supplant</h1>
+
+		<div id="mydiv"></div>
+
+		<script>
+			(function() {
+				// supplant() method from Crockfords `Remedial Javascript`
+				Function.prototype.method = function (name, func) {
+					this.prototype[name] = func;
+					return this;       
+				};
+
+				String.method("supplant", function( values, pattern ) {
+					pattern  = pattern || /\{([^\{\}]*)\}/g;
+					var self = this;
+
+					return self.replace(pattern, function(a, b) {
+						var p = b.split('.'),
+						r = values;
+
+						try {
+							for (var s in p) { r = r[p[s]];  };
+						} catch(e){
+							r = a;
+						}
+
+						return (typeof r === 'string' || typeof r === 'number') ? r : a;
+					});
+				});
+			})();
+		</script>
+
+		<script>
+			mydiv = document.getElementById("mydiv");
+
+			var template = '<table border="{border}">' +
+				'<tr><th>Last</th><td>{last}</td></tr>' +
+				'<tr><th>First</th><td>{first}</td></tr>' +
+				'</table>';
+
+			var data = {
+				first: "Hola",
+				last: "Món",
+				border: 1
+			};
+
+			mydiv.innerHTML = template.supplant(data);
+		</script>
+	</body>
+</html>
